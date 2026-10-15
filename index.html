@@ -40,7 +40,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -116,11 +117,6 @@ h3 {
   opacity: .7;
 }
 
-.highlight {
-  background: var(--yellow);
-  padding: 0 .2em;
-}
-
 .btn {
   border: 3px solid var(--black);
   border-radius: 15px;
@@ -179,7 +175,7 @@ h3 {
   margin: 8px 0;
 }
 
-/* Scratch card */
+/* SCRATCH CARD */
 
 .scratch-wrap {
   max-width: 680px;
@@ -220,6 +216,7 @@ h3 {
   height: 100%;
   touch-action: none;
   cursor: crosshair;
+  z-index: 5;
 }
 
 .scratch-note {
@@ -228,7 +225,7 @@ h3 {
   margin-top: 12px;
 }
 
-/* Game */
+/* GAME */
 
 .game-area {
   display: none;
@@ -289,7 +286,7 @@ h3 {
   text-align: center;
 }
 
-/* Feedback */
+/* FEEDBACK */
 
 .feedback {
   display: none;
@@ -320,7 +317,7 @@ textarea {
   margin-top: 8px;
 }
 
-/* Collector card */
+/* COLLECTOR CARD */
 
 .collector-section {
   display: none;
@@ -382,7 +379,7 @@ textarea {
   font-size: 1.4rem;
 }
 
-/* Footer */
+/* FOOTER */
 
 .footer {
   text-align: center;
@@ -417,8 +414,6 @@ textarea {
 
 <body>
 
-<!-- WELCOME -->
-
 <section class="page" id="welcome">
   <div class="container">
     <div class="card">
@@ -452,8 +447,6 @@ textarea {
     </div>
   </div>
 </section>
-
-<!-- MERCH -->
 
 <section class="page" id="merch">
   <div class="container">
@@ -528,8 +521,6 @@ textarea {
   </div>
 </section>
 
-<!-- SCRATCH REVEAL -->
-
 <section class="page" id="reveal">
   <div class="container">
     <div class="card">
@@ -581,8 +572,6 @@ textarea {
   </div>
 </section>
 
-<!-- GAME -->
-
 <section class="page game-area" id="game">
   <div class="container">
     <div class="card">
@@ -631,8 +620,6 @@ textarea {
     </div>
   </div>
 </section>
-
-<!-- FEEDBACK -->
 
 <section class="page feedback" id="feedback">
   <div class="container">
@@ -727,8 +714,6 @@ textarea {
     </div>
   </div>
 </section>
-
-<!-- COLLECTOR CARD -->
 
 <section class="page collector-section" id="collector">
   <div class="container">
@@ -850,8 +835,6 @@ textarea {
   </div>
 </section>
 
-<!-- END -->
-
 <footer class="footer">
   <h2>THANK YOU, LAUREN.</h2>
 
@@ -872,20 +855,19 @@ textarea {
 
 <script>
 
-/* ==============================
-   SCRATCH CARD
-================================ */
+/* SCRATCH CARD */
 
 const canvas = document.getElementById("scratchCanvas");
 const ctx = canvas.getContext("2d");
 
 function sizeScratchCanvas() {
   const rect = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
 
-  canvas.width = rect.width * window.devicePixelRatio;
-  canvas.height = rect.height * window.devicePixelRatio;
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
 
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
   const gradient = ctx.createLinearGradient(
     0,
@@ -898,12 +880,14 @@ function sizeScratchCanvas() {
   gradient.addColorStop(.5, "#eeeeee");
   gradient.addColorStop(1, "#969696");
 
+  ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, rect.width, rect.height);
 
   ctx.fillStyle = "#222";
   ctx.textAlign = "center";
   ctx.font = "900 28px Arial";
+
   ctx.fillText(
     "SCRATCH ME",
     rect.width / 2,
@@ -911,6 +895,7 @@ function sizeScratchCanvas() {
   );
 
   ctx.font = "700 16px Arial";
+
   ctx.fillText(
     "YOUR GAME IS UNDER HERE",
     rect.width / 2,
@@ -921,9 +906,9 @@ function sizeScratchCanvas() {
 sizeScratchCanvas();
 
 let scratching = false;
+let hasScratched = false;
 
 function scratch(x, y) {
-
   const rect = canvas.getBoundingClientRect();
 
   const px = x - rect.left;
@@ -932,12 +917,15 @@ function scratch(x, y) {
   ctx.globalCompositeOperation = "destination-out";
 
   ctx.beginPath();
-  ctx.arc(px, py, 30, 0, Math.PI * 2);
+  ctx.arc(px, py, 32, 0, Math.PI * 2);
   ctx.fill();
+
+  hasScratched = true;
 }
 
 canvas.addEventListener("pointerdown", e => {
   scratching = true;
+  canvas.setPointerCapture(e.pointerId);
   scratch(e.clientX, e.clientY);
 });
 
@@ -946,14 +934,26 @@ canvas.addEventListener("pointermove", e => {
   scratch(e.clientX, e.clientY);
 });
 
-window.addEventListener("pointerup", () => {
+canvas.addEventListener("pointerup", e => {
+  scratching = false;
+
+  if (canvas.hasPointerCapture(e.pointerId)) {
+    canvas.releasePointerCapture(e.pointerId);
+  }
+
+  if (hasScratched) {
+    setTimeout(() => {
+      canvas.style.display = "none";
+    }, 250);
+  }
+});
+
+canvas.addEventListener("pointercancel", () => {
   scratching = false;
 });
 
 
-/* ==============================
-   OPEN GAME
-================================ */
+/* OPEN GAME */
 
 document.getElementById("openGameBtn").addEventListener("click", () => {
 
@@ -970,9 +970,7 @@ document.getElementById("openGameBtn").addEventListener("click", () => {
 });
 
 
-/* ==============================
-   GAME QUESTIONS
-================================ */
+/* QUESTIONS */
 
 const questions = [
 
@@ -1075,8 +1073,6 @@ questions.forEach((question, index) => {
 
     button.addEventListener("click", () => {
 
-      if (button.disabled) return;
-
       const allButtons =
         optionsContainer.querySelectorAll(".option");
 
@@ -1103,9 +1099,7 @@ questions.forEach((question, index) => {
         allButtons.forEach(btn => {
 
           if (btn.textContent === question.answer) {
-
             btn.classList.add("correct");
-
           }
 
         });
@@ -1113,9 +1107,7 @@ questions.forEach((question, index) => {
       }
 
       if (answered === questions.length) {
-
         showScore();
-
       }
 
     });
@@ -1129,9 +1121,7 @@ questions.forEach((question, index) => {
 });
 
 
-/* ==============================
-   SCORE
-================================ */
+/* SCORE */
 
 function showScore() {
 
@@ -1172,9 +1162,7 @@ function showScore() {
 }
 
 
-/* ==============================
-   FEEDBACK
-================================ */
+/* FEEDBACK */
 
 document.getElementById("feedbackBtn").addEventListener("click", () => {
 
@@ -1241,9 +1229,7 @@ document.getElementById("submitFeedback").addEventListener("click", () => {
 });
 
 
-/* ==============================
-   COLLECTOR CARD FLIP
-================================ */
+/* COLLECTOR CARD */
 
 document.getElementById("collectorCard").addEventListener("click", function() {
 
