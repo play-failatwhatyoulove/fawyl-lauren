@@ -317,16 +317,16 @@ textarea {
   margin-top: 8px;
 }
 
-/* COLLECTOR CARD */
+/* CHROME COLLECTOR CARD */
 
 .collector-section {
   display: none;
 }
 
 .flip-wrap {
-  perspective: 1200px;
+  perspective: 1600px;
   max-width: 430px;
-  margin: 40px auto;
+  margin: 45px auto;
 }
 
 .collector-card {
@@ -334,7 +334,7 @@ textarea {
   width: 100%;
   aspect-ratio: 2.5 / 3.5;
   transform-style: preserve-3d;
-  transition: transform .7s ease;
+  transition: transform .75s cubic-bezier(.2,.7,.2,1);
   cursor: pointer;
 }
 
@@ -346,37 +346,215 @@ textarea {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border: 5px solid var(--black);
-  border-radius: 28px;
+  border-radius: 26px;
   padding: 28px;
-  box-shadow: 9px 9px 0 var(--black);
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.55);
+  box-shadow:
+    0 0 0 2px #111,
+    0 20px 60px rgba(0,0,0,.45),
+    inset 0 0 30px rgba(255,255,255,.08);
+}
+
+.card-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(255,255,255,.35) 12%,
+      transparent 22%,
+      rgba(0,255,255,.18) 38%,
+      rgba(255,0,255,.15) 52%,
+      transparent 68%,
+      rgba(255,255,255,.28) 82%,
+      transparent 100%
+    );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.card-face::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(0,255,255,.15),
+      rgba(255,0,255,.18),
+      rgba(255,255,0,.12),
+      rgba(0,255,255,.15)
+    );
+  animation: holoSpin 8s linear infinite;
+  opacity: .45;
+  pointer-events: none;
+}
+
+@keyframes holoSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .card-front {
   background:
-    radial-gradient(circle at top right, var(--blue), transparent 40%),
-    linear-gradient(160deg, var(--pink), var(--yellow));
+    linear-gradient(
+      145deg,
+      #0b0b0f 0%,
+      #1c1c22 28%,
+      #444851 48%,
+      #111318 68%,
+      #050506 100%
+    );
+  color: white;
 }
 
 .card-back {
-  background: var(--cream);
+  background:
+    linear-gradient(
+      145deg,
+      #16181d 0%,
+      #3d4148 30%,
+      #111 55%,
+      #22262d 100%
+    );
+  color: white;
   transform: rotateY(180deg);
+}
+
+.card-content {
+  position: relative;
+  z-index: 3;
+}
+
+.card-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .85;
 }
 
 .card-number {
   font-weight: 900;
-  text-align: right;
 }
 
-.collector-name {
-  margin-top: 45px;
-  font-size: 3rem;
+.chrome-title {
+  margin-top: 36px;
+  font-size: clamp(2.4rem, 8vw, 4.2rem);
+  line-height: .92;
+  letter-spacing: -.04em;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #c9c9c9 20%,
+      #ffffff 42%,
+      #7f848c 58%,
+      #eeeeee 75%,
+      #8f949c 100%
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255,255,255,.08);
+}
+
+.chrome-subtitle {
+  margin-top: 16px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  color: #d9d9d9;
+}
+
+.tester-stamp {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255,255,255,.6);
+  border-radius: 999px;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(8px);
+}
+
+.card-rule {
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.7),
+      transparent
+    );
+  margin: 28px 0;
+}
+
+.card-label {
+  font-size: .72rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  opacity: .65;
+  margin-bottom: 5px;
+}
+
+.card-value {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 18px;
 }
 
 .meter {
-  margin: 15px 0;
+  margin: 7px 0 20px;
   font-family: monospace;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
+  letter-spacing: .1em;
+}
+
+.flip-hint {
+  position: absolute;
+  bottom: 22px;
+  left: 28px;
+  right: 28px;
+  text-align: center;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  opacity: .7;
+}
+
+.chrome-orb {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  right: -45px;
+  bottom: 45px;
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      #ffffff 0%,
+      #a9faff 14%,
+      #7e64ff 34%,
+      #ff5ad9 50%,
+      #20242b 72%,
+      #000 100%
+    );
+  filter: saturate(1.2);
+  box-shadow:
+    inset -15px -15px 35px rgba(0,0,0,.5),
+    0 0 45px rgba(110,220,255,.16);
+  z-index: 1;
 }
 
 /* FOOTER */
@@ -408,15 +586,26 @@ textarea {
   .page {
     padding: 45px 14px;
   }
+
+  .card-face {
+    padding: 22px;
+  }
+
+  .chrome-title {
+    font-size: 2.6rem;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- WELCOME -->
+
 <section class="page" id="welcome">
   <div class="container">
     <div class="card">
+
       <span class="badge">FAWYL Original Tester</span>
 
       <h1>HEY,<br>LAUREN.</h1>
@@ -444,9 +633,13 @@ textarea {
       </h3>
 
       <a href="#merch" class="btn">LET'S GO →</a>
+
     </div>
   </div>
 </section>
+
+
+<!-- MERCH -->
 
 <section class="page" id="merch">
   <div class="container">
@@ -508,18 +701,25 @@ textarea {
       </div>
 
       <div class="status">
+
         <strong>CURRENT STATUS:</strong>
 
         <p>🚗 Creator currently defeated by transportation.</p>
         <p>📦 Merch safe.</p>
         <p>❤️ Lauren absolutely not forgotten.</p>
+
       </div>
 
-      <a href="#reveal" class="btn blue">OKAY BUT WHAT DID I GET? →</a>
+      <a href="#reveal" class="btn blue">
+        OKAY BUT WHAT DID I GET? →
+      </a>
 
     </div>
   </div>
 </section>
+
+
+<!-- SCRATCH REVEAL -->
 
 <section class="page" id="reveal">
   <div class="container">
@@ -538,24 +738,33 @@ textarea {
         But I'm not just telling you which one.
       </p>
 
-      <p><strong>Obviously.</strong></p>
+      <p>
+        <strong>Obviously.</strong>
+      </p>
 
       <div class="scratch-wrap">
 
         <div class="scratch-card" id="scratchCard">
 
           <div class="reveal-content">
-            <p>SEASON 1 ORIGINAL TESTER EDITION</p>
-
-            <h2>CRYPTIC<br>INSTRUCTIONS</h2>
 
             <p>
-              <strong>ROUND:</strong> Surprise, It's Worse!
+              SEASON 1 ORIGINAL TESTER EDITION
+            </p>
+
+            <h2>
+              CRYPTIC<br>INSTRUCTIONS
+            </h2>
+
+            <p>
+              <strong>ROUND:</strong>
+              Surprise, It's Worse!
             </p>
 
             <button class="btn yellow" id="openGameBtn">
               OPEN MY GAME →
             </button>
+
           </div>
 
           <canvas id="scratchCanvas"></canvas>
@@ -571,6 +780,9 @@ textarea {
     </div>
   </div>
 </section>
+
+
+<!-- GAME -->
 
 <section class="page game-area" id="game">
   <div class="container">
@@ -597,6 +809,7 @@ textarea {
       </p>
 
       <div class="status">
+
         <strong>HOW THIS WORKS</strong>
 
         <p>🔐 You have five coded instructions.</p>
@@ -604,22 +817,29 @@ textarea {
         <p>🎯 Choose the correct answer.</p>
         <p>🚫 Once you choose, your answer is locked.</p>
         <p>🏆 Get at least 3 out of 5 to technically succeed.</p>
+
       </div>
 
       <div id="questions"></div>
 
       <div class="scorebox hidden" id="scoreBox">
+
         <h2 id="scoreTitle"></h2>
+
         <p id="scoreText"></p>
 
         <button class="btn" id="feedbackBtn">
           GIVE TESTER FEEDBACK →
         </button>
+
       </div>
 
     </div>
   </div>
 </section>
+
+
+<!-- FEEDBACK -->
 
 <section class="page feedback" id="feedback">
   <div class="container">
@@ -642,7 +862,11 @@ textarea {
       </p>
 
       <div class="rating-row">
-        <label>How fun was it?</label>
+
+        <label>
+          How fun was it?
+        </label>
+
         <select id="funRating">
           <option value="">Choose one</option>
           <option>⭐</option>
@@ -651,10 +875,15 @@ textarea {
           <option>⭐⭐⭐⭐</option>
           <option>⭐⭐⭐⭐⭐</option>
         </select>
+
       </div>
 
       <div class="rating-row">
-        <label>How easy were the rules to understand?</label>
+
+        <label>
+          How easy were the rules to understand?
+        </label>
+
         <select id="rulesRating">
           <option value="">Choose one</option>
           <option>⭐</option>
@@ -663,10 +892,15 @@ textarea {
           <option>⭐⭐⭐⭐</option>
           <option>⭐⭐⭐⭐⭐</option>
         </select>
+
       </div>
 
       <div class="rating-row">
-        <label>How difficult was the actual game?</label>
+
+        <label>
+          How difficult was the actual game?
+        </label>
+
         <select id="difficultyRating">
           <option value="">Choose one</option>
           <option>⭐</option>
@@ -675,36 +909,62 @@ textarea {
           <option>⭐⭐⭐⭐</option>
           <option>⭐⭐⭐⭐⭐</option>
         </select>
+
       </div>
 
       <div class="rating-row">
-        <label>Would you willingly play this again?</label>
+
+        <label>
+          Would you willingly play this again?
+        </label>
+
         <select id="playAgain">
           <option value="">Choose one</option>
           <option>Absolutely</option>
           <option>Maybe</option>
           <option>I have suffered enough</option>
         </select>
+
       </div>
 
       <div class="rating-row">
-        <label>What confused you?</label>
+
+        <label>
+          What confused you?
+        </label>
+
         <textarea id="confused"></textarea>
+
       </div>
 
       <div class="rating-row">
-        <label>What was your favorite part?</label>
+
+        <label>
+          What was your favorite part?
+        </label>
+
         <textarea id="favorite"></textarea>
+
       </div>
 
       <div class="rating-row">
-        <label>What would you change?</label>
+
+        <label>
+          What would you change?
+        </label>
+
         <textarea id="change"></textarea>
+
       </div>
 
       <div class="rating-row">
-        <label>Did anything break or behave weirdly?</label>
+
+        <label>
+          Did anything break or behave weirdly?
+        </label>
+
         <textarea id="broken"></textarea>
+
       </div>
 
       <button class="btn green" id="submitFeedback">
@@ -715,13 +975,20 @@ textarea {
   </div>
 </section>
 
+
+<!-- COLLECTOR CARD -->
+
 <section class="page collector-section" id="collector">
   <div class="container">
     <div class="card">
 
-      <span class="badge">One More Thing</span>
+      <span class="badge">
+        One More Thing
+      </span>
 
-      <h2>YOUR COLLECTOR CARD.</h2>
+      <h2>
+        YOUR COLLECTOR CARD.
+      </h2>
 
       <p>
         You're not just testing some random prototype.
@@ -743,78 +1010,141 @@ textarea {
 
         <div class="collector-card" id="collectorCard">
 
+          <!-- FRONT -->
+
           <div class="card-face card-front">
 
-            <div class="card-number">
-              01 / 09
+            <div class="chrome-orb"></div>
+
+            <div class="card-content">
+
+              <div class="card-topline">
+
+                <span>
+                  FAWYL // ORIGINAL TESTER
+                </span>
+
+                <span class="card-number">
+                  01 / 09
+                </span>
+
+              </div>
+
+              <div class="card-rule"></div>
+
+              <div class="chrome-title">
+                LAUREN
+              </div>
+
+              <div class="chrome-subtitle">
+                Cryptic Instructions
+              </div>
+
+              <div class="tester-stamp">
+                Pre-Season Test Run
+              </div>
+
+              <div class="card-rule"></div>
+
+              <div class="card-label">
+                Classification
+              </div>
+
+              <div class="card-value">
+                Original Season 1 Tester
+              </div>
+
+              <div class="card-label">
+                Status
+              </div>
+
+              <div class="card-value">
+                Here Before It Worked
+              </div>
+
+              <div class="flip-hint">
+                Tap to flip →
+              </div>
+
             </div>
-
-            <p>
-              FAIL AT WHAT YOU LOVE
-            </p>
-
-            <h2 class="collector-name">
-              LAUREN
-            </h2>
-
-            <h3>
-              CRYPTIC INSTRUCTIONS
-            </h3>
-
-            <p>
-              ORIGINAL SEASON 1 TESTER
-            </p>
-
-            <p>
-              PRE-SEASON TEST RUN
-            </p>
-
-            <p style="margin-top:40px;">
-              <strong>Tap to flip →</strong>
-            </p>
 
           </div>
 
+
+          <!-- BACK -->
+
           <div class="card-face card-back">
 
-            <p>
-              FAIL AT WHAT YOU LOVE
-            </p>
+            <div class="card-content">
 
-            <h2>
-              CRYPTIC INSTRUCTIONS
-            </h2>
+              <div class="card-topline">
 
-            <p>
-              <strong>ROUND:</strong><br>
-              Surprise, It's Worse!
-            </p>
+                <span>
+                  FAIL AT WHAT YOU LOVE
+                </span>
 
-            <p>
-              <strong>MISSION:</strong><br>
-              Decode confusing instructions and somehow follow them correctly.
-            </p>
+                <span>
+                  SEASON 1
+                </span>
 
-            <p>
-              <strong>FAWYL DIFFICULTY</strong>
-            </p>
+              </div>
 
-            <div class="meter">
-              ████░
+              <div class="card-rule"></div>
+
+              <div
+                class="chrome-title"
+                style="font-size:2.25rem;"
+              >
+                CRYPTIC<br>INSTRUCTIONS
+              </div>
+
+              <div class="card-rule"></div>
+
+              <div class="card-label">
+                Round
+              </div>
+
+              <div class="card-value">
+                Surprise, It's Worse!
+              </div>
+
+              <div class="card-label">
+                Mission
+              </div>
+
+              <div class="card-value">
+                Decode confusing instructions and somehow follow them correctly.
+              </div>
+
+              <div class="card-label">
+                FAWYL Difficulty
+              </div>
+
+              <div class="meter">
+                ████░
+              </div>
+
+              <div class="card-label">
+                Chance of confidently doing the wrong thing
+              </div>
+
+              <div class="meter">
+                █████
+              </div>
+
+              <div class="card-label">
+                Original Tester
+              </div>
+
+              <div class="card-value">
+                Lauren
+              </div>
+
+              <div class="flip-hint">
+                Tap to flip back →
+              </div>
+
             </div>
-
-            <p>
-              <strong>CHANCE OF CONFIDENTLY DOING THE WRONG THING</strong>
-            </p>
-
-            <div class="meter">
-              █████
-            </div>
-
-            <p>
-              <strong>ORIGINAL TESTER:</strong><br>
-              Lauren
-            </p>
 
           </div>
 
@@ -828,19 +1158,35 @@ textarea {
       </p>
 
       <p style="text-align:center;">
-        <strong>Meaning yes. You get to say you had yours first.</strong>
+        <strong>
+          Meaning yes. You get to say you had yours first.
+        </strong>
       </p>
 
     </div>
   </div>
 </section>
 
-<footer class="footer">
-  <h2>THANK YOU, LAUREN.</h2>
 
-  <p>For being early.</p>
-  <p>For being patient.</p>
-  <p>For helping build this while we're still figuring it out.</p>
+<!-- FOOTER -->
+
+<footer class="footer">
+
+  <h2>
+    THANK YOU, LAUREN.
+  </h2>
+
+  <p>
+    For being early.
+  </p>
+
+  <p>
+    For being patient.
+  </p>
+
+  <p>
+    For helping build this while we're still figuring it out.
+  </p>
 
   <br>
 
@@ -850,43 +1196,93 @@ textarea {
     LOVE THE THING.
   </h3>
 
-  <p>— FAWYL</p>
+  <p>
+    — FAWYL
+  </p>
+
 </footer>
+
 
 <script>
 
-/* SCRATCH CARD */
+/* =========================
+   SCRATCH CARD
+========================= */
 
-const canvas = document.getElementById("scratchCanvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+  document.getElementById("scratchCanvas");
+
+const ctx =
+  canvas.getContext("2d");
+
 
 function sizeScratchCanvas() {
-  const rect = canvas.getBoundingClientRect();
-  const ratio = window.devicePixelRatio || 1;
 
-  canvas.width = rect.width * ratio;
-  canvas.height = rect.height * ratio;
+  const rect =
+    canvas.getBoundingClientRect();
 
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  const ratio =
+    window.devicePixelRatio || 1;
 
-  const gradient = ctx.createLinearGradient(
+  canvas.width =
+    rect.width * ratio;
+
+  canvas.height =
+    rect.height * ratio;
+
+  ctx.setTransform(
+    ratio,
+    0,
+    0,
+    ratio,
+    0,
+    0
+  );
+
+  const gradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      rect.width,
+      rect.height
+    );
+
+  gradient.addColorStop(
+    0,
+    "#b7b7b7"
+  );
+
+  gradient.addColorStop(
+    .5,
+    "#eeeeee"
+  );
+
+  gradient.addColorStop(
+    1,
+    "#969696"
+  );
+
+  ctx.globalCompositeOperation =
+    "source-over";
+
+  ctx.fillStyle =
+    gradient;
+
+  ctx.fillRect(
     0,
     0,
     rect.width,
     rect.height
   );
 
-  gradient.addColorStop(0, "#b7b7b7");
-  gradient.addColorStop(.5, "#eeeeee");
-  gradient.addColorStop(1, "#969696");
+  ctx.fillStyle =
+    "#222";
 
-  ctx.globalCompositeOperation = "source-over";
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, rect.width, rect.height);
+  ctx.textAlign =
+    "center";
 
-  ctx.fillStyle = "#222";
-  ctx.textAlign = "center";
-  ctx.font = "900 28px Arial";
+  ctx.font =
+    "900 28px Arial";
 
   ctx.fillText(
     "SCRATCH ME",
@@ -894,7 +1290,8 @@ function sizeScratchCanvas() {
     rect.height / 2
   );
 
-  ctx.font = "700 16px Arial";
+  ctx.font =
+    "700 16px Arial";
 
   ctx.fillText(
     "YOUR GAME IS UNDER HERE",
@@ -905,236 +1302,437 @@ function sizeScratchCanvas() {
 
 sizeScratchCanvas();
 
-let scratching = false;
-let hasScratched = false;
+
+let scratching =
+  false;
+
+let hasScratched =
+  false;
+
 
 function scratch(x, y) {
-  const rect = canvas.getBoundingClientRect();
 
-  const px = x - rect.left;
-  const py = y - rect.top;
+  const rect =
+    canvas.getBoundingClientRect();
 
-  ctx.globalCompositeOperation = "destination-out";
+  const px =
+    x - rect.left;
+
+  const py =
+    y - rect.top;
+
+  ctx.globalCompositeOperation =
+    "destination-out";
 
   ctx.beginPath();
-  ctx.arc(px, py, 32, 0, Math.PI * 2);
+
+  ctx.arc(
+    px,
+    py,
+    32,
+    0,
+    Math.PI * 2
+  );
+
   ctx.fill();
 
-  hasScratched = true;
+  hasScratched =
+    true;
 }
 
-canvas.addEventListener("pointerdown", e => {
-  scratching = true;
-  canvas.setPointerCapture(e.pointerId);
-  scratch(e.clientX, e.clientY);
-});
 
-canvas.addEventListener("pointermove", e => {
-  if (!scratching) return;
-  scratch(e.clientX, e.clientY);
-});
+canvas.addEventListener(
+  "pointerdown",
+  e => {
 
-canvas.addEventListener("pointerup", e => {
-  scratching = false;
+    scratching =
+      true;
 
-  if (canvas.hasPointerCapture(e.pointerId)) {
-    canvas.releasePointerCapture(e.pointerId);
+    canvas.setPointerCapture(
+      e.pointerId
+    );
+
+    scratch(
+      e.clientX,
+      e.clientY
+    );
+
   }
+);
 
-  if (hasScratched) {
-    setTimeout(() => {
-      canvas.style.display = "none";
-    }, 250);
+
+canvas.addEventListener(
+  "pointermove",
+  e => {
+
+    if (!scratching) return;
+
+    scratch(
+      e.clientX,
+      e.clientY
+    );
+
   }
-});
-
-canvas.addEventListener("pointercancel", () => {
-  scratching = false;
-});
+);
 
 
-/* OPEN GAME */
+canvas.addEventListener(
+  "pointerup",
+  e => {
 
-document.getElementById("openGameBtn").addEventListener("click", () => {
+    scratching =
+      false;
 
-  canvas.style.display = "none";
+    if (
+      canvas.hasPointerCapture(
+        e.pointerId
+      )
+    ) {
 
-  const game = document.getElementById("game");
+      canvas.releasePointerCapture(
+        e.pointerId
+      );
 
-  game.style.display = "flex";
+    }
 
-  game.scrollIntoView({
-    behavior: "smooth"
-  });
+    if (hasScratched) {
 
-});
+      setTimeout(() => {
+
+        canvas.style.display =
+          "none";
+
+      }, 250);
+
+    }
+
+  }
+);
 
 
-/* QUESTIONS */
+canvas.addEventListener(
+  "pointercancel",
+  () => {
+
+    scratching =
+      false;
+
+  }
+);
+
+
+/* =========================
+   OPEN GAME
+========================= */
+
+document
+  .getElementById("openGameBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      canvas.style.display =
+        "none";
+
+      const game =
+        document.getElementById(
+          "game"
+        );
+
+      game.style.display =
+        "flex";
+
+      game.scrollIntoView({
+        behavior: "smooth"
+      });
+
+    }
+  );
+
+
+/* =========================
+   QUESTIONS
+========================= */
 
 const questions = [
 
   {
     code: "UFTUFS",
-    clue: "Every letter has been shifted forward by one.",
+
+    clue:
+      "Every letter has been shifted forward by one.",
+
     options: [
       "TESTER",
       "FAWYL",
       "BUTTON",
       "CHAOS"
     ],
-    answer: "TESTER"
+
+    answer:
+      "TESTER"
   },
 
   {
-    code: "19 - 13 - 9 - 12 - 5",
-    clue: "A = 1. B = 2. C = 3...",
+    code:
+      "19 - 13 - 9 - 12 - 5",
+
+    clue:
+      "A = 1. B = 2. C = 3...",
+
     options: [
       "SMILE",
       "FAILS",
       "CHAOS",
       "LAUREN"
     ],
-    answer: "SMILE"
+
+    answer:
+      "SMILE"
   },
 
   {
-    code: "NWOD EDISPU",
-    clue: "Sometimes the answer is staring backward at you.",
+    code:
+      "NWOD EDISPU",
+
+    clue:
+      "Sometimes the answer is staring backward at you.",
+
     options: [
       "TURN AROUND",
       "UPSIDE DOWN",
       "LOOK BEHIND",
       "TRY AGAIN"
     ],
-    answer: "UPSIDE DOWN"
+
+    answer:
+      "UPSIDE DOWN"
   },
 
   {
-    code: "❄️ + 🧢",
-    clue: "Say what each picture represents.",
+    code:
+      "❄️ + 🧢",
+
+    clue:
+      "Say what each picture represents.",
+
     options: [
       "Cold Hat",
       "Ice Cap",
       "Snow Head",
       "Winter Hat"
     ],
-    answer: "Ice Cap"
+
+    answer:
+      "Ice Cap"
   },
 
   {
-    code: "OD EHT GNIHT",
-    clue: "The beginning is actually the end.",
+    code:
+      "OD EHT GNIHT",
+
+    clue:
+      "The beginning is actually the end.",
+
     options: [
       "DO THE THING",
       "FAIL THE THING",
       "LOVE THE THING",
       "BREAK THE THING"
     ],
-    answer: "DO THE THING"
+
+    answer:
+      "DO THE THING"
   }
 
 ];
 
-let answered = 0;
-let correct = 0;
 
-const questionContainer = document.getElementById("questions");
+let answered =
+  0;
 
-questions.forEach((question, index) => {
+let correct =
+  0;
 
-  const task = document.createElement("div");
 
-  task.className = "game-task";
+const questionContainer =
+  document.getElementById(
+    "questions"
+  );
 
-  task.innerHTML = `
-    <h3>TASK ${index + 1}</h3>
 
-    <div class="code">
-      ${question.code}
-    </div>
+questions.forEach(
+  (question, index) => {
 
-    <p>
-      <strong>CLUE:</strong>
-      ${question.clue}
-    </p>
+    const task =
+      document.createElement(
+        "div"
+      );
 
-    <div class="options"></div>
-  `;
+    task.className =
+      "game-task";
 
-  const optionsContainer = task.querySelector(".options");
+    task.innerHTML = `
+      <h3>TASK ${index + 1}</h3>
 
-  question.options.forEach(option => {
+      <div class="code">
+        ${question.code}
+      </div>
 
-    const button = document.createElement("button");
+      <p>
+        <strong>CLUE:</strong>
+        ${question.clue}
+      </p>
 
-    button.className = "option";
-    button.textContent = option;
+      <div class="options"></div>
+    `;
 
-    button.addEventListener("click", () => {
 
-      const allButtons =
-        optionsContainer.querySelectorAll(".option");
+    const optionsContainer =
+      task.querySelector(
+        ".options"
+      );
 
-      allButtons.forEach(btn => {
-        btn.disabled = true;
-      });
 
-      answered++;
+    question.options.forEach(
+      option => {
 
-      if (option === question.answer) {
+        const button =
+          document.createElement(
+            "button"
+          );
 
-        correct++;
+        button.className =
+          "option";
 
-        button.classList.add("correct");
+        button.textContent =
+          option;
 
-        button.textContent += " ✓";
 
-      } else {
+        button.addEventListener(
+          "click",
+          () => {
 
-        button.classList.add("wrong");
+            const allButtons =
+              optionsContainer
+                .querySelectorAll(
+                  ".option"
+                );
 
-        button.textContent += " ✕";
+            allButtons.forEach(
+              btn => {
 
-        allButtons.forEach(btn => {
+                btn.disabled =
+                  true;
 
-          if (btn.textContent === question.answer) {
-            btn.classList.add("correct");
+              }
+            );
+
+
+            answered++;
+
+
+            if (
+              option ===
+              question.answer
+            ) {
+
+              correct++;
+
+              button.classList.add(
+                "correct"
+              );
+
+              button.textContent +=
+                " ✓";
+
+            } else {
+
+              button.classList.add(
+                "wrong"
+              );
+
+              button.textContent +=
+                " ✕";
+
+
+              allButtons.forEach(
+                btn => {
+
+                  if (
+                    btn.textContent ===
+                    question.answer
+                  ) {
+
+                    btn.classList.add(
+                      "correct"
+                    );
+
+                  }
+
+                }
+              );
+
+            }
+
+
+            if (
+              answered ===
+              questions.length
+            ) {
+
+              showScore();
+
+            }
+
           }
+        );
 
-        });
+
+        optionsContainer
+          .appendChild(
+            button
+          );
 
       }
-
-      if (answered === questions.length) {
-        showScore();
-      }
-
-    });
-
-    optionsContainer.appendChild(button);
-
-  });
-
-  questionContainer.appendChild(task);
-
-});
+    );
 
 
-/* SCORE */
+    questionContainer
+      .appendChild(
+        task
+      );
+
+  }
+);
+
+
+/* =========================
+   SCORE
+========================= */
 
 function showScore() {
 
   const scoreBox =
-    document.getElementById("scoreBox");
+    document.getElementById(
+      "scoreBox"
+    );
 
   const title =
-    document.getElementById("scoreTitle");
+    document.getElementById(
+      "scoreTitle"
+    );
 
   const text =
-    document.getElementById("scoreText");
+    document.getElementById(
+      "scoreText"
+    );
 
-  scoreBox.classList.remove("hidden");
+
+  scoreBox.classList.remove(
+    "hidden"
+  );
+
 
   if (correct >= 3) {
 
@@ -1154,6 +1752,7 @@ function showScore() {
 
   }
 
+
   scoreBox.scrollIntoView({
     behavior: "smooth",
     block: "center"
@@ -1162,80 +1761,138 @@ function showScore() {
 }
 
 
-/* FEEDBACK */
+/* =========================
+   FEEDBACK
+========================= */
 
-document.getElementById("feedbackBtn").addEventListener("click", () => {
+document
+  .getElementById(
+    "feedbackBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-  const feedback =
-    document.getElementById("feedback");
+      const feedback =
+        document.getElementById(
+          "feedback"
+        );
 
-  feedback.style.display = "flex";
+      feedback.style.display =
+        "flex";
 
-  feedback.scrollIntoView({
-    behavior: "smooth"
-  });
+      feedback.scrollIntoView({
+        behavior: "smooth"
+      });
 
-});
-
-
-document.getElementById("submitFeedback").addEventListener("click", () => {
-
-  const feedbackData = {
-
-    tester: "Lauren",
-    game: "Cryptic Instructions",
-    score: `${correct}/5`,
-
-    fun:
-      document.getElementById("funRating").value,
-
-    rules:
-      document.getElementById("rulesRating").value,
-
-    difficulty:
-      document.getElementById("difficultyRating").value,
-
-    playAgain:
-      document.getElementById("playAgain").value,
-
-    confused:
-      document.getElementById("confused").value,
-
-    favorite:
-      document.getElementById("favorite").value,
-
-    change:
-      document.getElementById("change").value,
-
-    broken:
-      document.getElementById("broken").value
-
-  };
-
-  localStorage.setItem(
-    "fawylLaurenFeedback",
-    JSON.stringify(feedbackData)
+    }
   );
 
-  const collector =
-    document.getElementById("collector");
 
-  collector.style.display = "flex";
+document
+  .getElementById(
+    "submitFeedback"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-  collector.scrollIntoView({
-    behavior: "smooth"
-  });
+      const feedbackData = {
 
-});
+        tester:
+          "Lauren",
+
+        game:
+          "Cryptic Instructions",
+
+        score:
+          `${correct}/5`,
+
+        fun:
+          document.getElementById(
+            "funRating"
+          ).value,
+
+        rules:
+          document.getElementById(
+            "rulesRating"
+          ).value,
+
+        difficulty:
+          document.getElementById(
+            "difficultyRating"
+          ).value,
+
+        playAgain:
+          document.getElementById(
+            "playAgain"
+          ).value,
+
+        confused:
+          document.getElementById(
+            "confused"
+          ).value,
+
+        favorite:
+          document.getElementById(
+            "favorite"
+          ).value,
+
+        change:
+          document.getElementById(
+            "change"
+          ).value,
+
+        broken:
+          document.getElementById(
+            "broken"
+          ).value
+
+      };
 
 
-/* COLLECTOR CARD */
+      localStorage.setItem(
+        "fawylLaurenFeedback",
+        JSON.stringify(
+          feedbackData
+        )
+      );
 
-document.getElementById("collectorCard").addEventListener("click", function() {
 
-  this.classList.toggle("flipped");
+      const collector =
+        document.getElementById(
+          "collector"
+        );
 
-});
+      collector.style.display =
+        "flex";
+
+      collector.scrollIntoView({
+        behavior: "smooth"
+      });
+
+    }
+  );
+
+
+/* =========================
+   COLLECTOR CARD
+========================= */
+
+document
+  .getElementById(
+    "collectorCard"
+  )
+  .addEventListener(
+    "click",
+    function() {
+
+      this.classList.toggle(
+        "flipped"
+      );
+
+    }
+  );
 
 </script>
 
